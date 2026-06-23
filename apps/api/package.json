@@ -10,10 +10,11 @@
   },
   "dependencies": {
     "@my-app/shared": "workspace:*",
+    "@prisma/client": "^6.19.3",
+    "@upstash/redis": "^1.38.0",
     "better-auth": "^1.6.20",
     "dotenv": "^17.4.2",
-    "prisma": "^6.19.3",
-    "@prisma/client": "^6.19.3"
+    "prisma": "^6.19.3"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -1,5 +1,7 @@
 import { db } from '../lib/db'
 import { auth } from '../lib/auth'
+import { redis, cacheKeys, CACHE_TTL } from '../lib/redis'
+import type { Task } from '../../generated/prisma/client'
 
 export async function tasksRouter(request: Request): Promise<Response> {
 	const session = await auth.api.getSession({ headers: request.headers })
@@ -14,10 +16,25 @@ export async function tasksRouter(request: Request): Promise<Response> {
 
 	// GET /api/tasks
 	if (method === 'GET') {
+		const cacheKey = cacheKeys.tasks(userId)
+
+		// Check cache first
+		const cached = await redis.get<Task[]>(cacheKey)
+		if (cached) {
+			console.log(`[cache] HIT tasks:${userId}`)
+			return Response.json(cached)
+		}
+
+		console.log(`[cache] MISS tasks:${userId}`)
+
 		const tasks = await db.task.findMany({
 			where: { userId },
 			orderBy: [{ status: 'asc' }, { priority: 'desc' }, { createdAt: 'desc' }],
 		})
+
+		// Store in cache
+		await redis.set(cacheKey, tasks, { ex: CACHE_TTL })
+
 		return Response.json(tasks)
 	}
 
@@ -44,6 +61,10 @@ export async function tasksRouter(request: Request): Promise<Response> {
 			},
 		})
 
+		// Invalidate cache
+		await redis.del(cacheKeys.tasks(userId))
+		console.log(`[cache] INVALIDATED tasks:${userId}`)
+
 		return Response.json(task, { status: 201 })
 	}
 
@@ -61,7 +82,6 @@ export async function tasksRouter(request: Request): Promise<Response> {
 			deadline?: string | null
 		}
 
-		// Verify task belongs to user
 		const existing = await db.task.findFirst({ where: { id, userId } })
 		if (!existing) {
 			return Response.json({ error: 'Task not found' }, { status: 404 })
@@ -80,6 +100,10 @@ export async function tasksRouter(request: Request): Promise<Response> {
 			},
 		})
 
+		// Invalidate cache
+		await redis.del(cacheKeys.tasks(userId))
+		console.log(`[cache] INVALIDATED tasks:${userId}`)
+
 		return Response.json(task)
 	}
 
@@ -95,6 +119,11 @@ export async function tasksRouter(request: Request): Promise<Response> {
 		}
 
 		await db.task.delete({ where: { id } })
+
+		// Invalidate cache
+		await redis.del(cacheKeys.tasks(userId))
+		console.log(`[cache] INVALIDATED tasks:${userId}`)
+
 		return Response.json({ success: true })
 	}
 
