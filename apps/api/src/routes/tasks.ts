@@ -1,7 +1,7 @@
 import { db } from '../lib/db'
 import { auth } from '../lib/auth'
 import { redis, cacheKeys, CACHE_TTL } from '../lib/redis'
-import type { Task } from '../../generated/prisma/client'
+import type { Task } from '@prisma/client'
 
 export async function tasksRouter(request: Request): Promise<Response> {
 	const session = await auth.api.getSession({ headers: request.headers })

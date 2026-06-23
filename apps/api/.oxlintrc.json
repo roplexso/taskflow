@@ -21,6 +21,7 @@
         "eqeqeq": "error"
     },
     "ignorePatterns": [
-        "generated/**"
+        "generated/**",
+        "prisma/generated/**"
     ]
 }

@@ -24,6 +24,6 @@ export default [
 		},
 	},
 	{
-		ignores: ['generated/**', 'node_modules/**'],
+		ignores: ['generated/**', 'prisma/generated/**', 'node_modules/**'],
 	},
 ]
