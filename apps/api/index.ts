@@ -57,7 +57,7 @@ async function updateStreaks() {
 		if (tasksDueYesterday.length === 0) continue
 
 		const allCompleted = tasksDueYesterday.every(
-			(t) => t.status === 'COMPLETED',
+			(t: { status: string }) => t.status === 'COMPLETED',
 		)
 
 		if (allCompleted) {

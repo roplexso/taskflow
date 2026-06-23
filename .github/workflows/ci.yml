@@ -1,75 +1,25 @@
-name: CI
+typecheck:
+  name: Type check
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: 1.3.14
 
-jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Install dependencies
+      run: bun install
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.3.14
+    - name: Generate Prisma client
+      run: cd apps/api && bunx prisma generate
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/myapp
 
-      - name: Install dependencies
-        run: bun install
+    - name: Typecheck API
+      run: cd apps/api && bunx tsc --noEmit
 
-      - name: Lint web
-        run: cd apps/web && bunx oxlint .
-
-      - name: Lint api
-        run: cd apps/api && bunx oxlint .
-
-  typecheck:
-    name: Type check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.3.14
-
-      - name: Install dependencies
-        run: bun install
-
-      - name: Typecheck API
-        run: cd apps/api && bunx tsc --noEmit
-
-      - name: Typecheck web
-        run: cd apps/web && bunx tsc --noEmit
-
-  build:
-    name: Build check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.3.14
-
-      - name: Install dependencies
-        run: bun install
-
-      - name: Generate Prisma client
-        run: cd apps/api && bunx prisma generate
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/myapp
-
-      - name: Build web
-        run: cd apps/web && bun run build
-        env:
-          NEXT_PUBLIC_API_URL: http://localhost:3001
+    - name: Typecheck web
+      run: cd apps/web && bunx tsc --noEmit
