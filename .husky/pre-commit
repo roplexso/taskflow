@@ -1,1 +1,1 @@
-bun run lint:fast
+cd apps/web && bunx oxlint . && cd ../api && bunx oxlint . && cd ../
