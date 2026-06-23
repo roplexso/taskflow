@@ -14,7 +14,7 @@ export default function LoginPage() {
 		e.preventDefault()
 		setError('')
 
-		const { data, error } = await signIn.email({
+		const { error } = await signIn.email({
 			email,
 			password,
 		})

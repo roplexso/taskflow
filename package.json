@@ -11,7 +11,8 @@
     "dev:api": "bun --cwd apps/api dev",
     "dev": "bun run dev:web & bun run dev:api",
     "lint": "bun --cwd apps/web run lint && bun --cwd apps/api run lint",
-    "lint:fast": "bun --cwd apps/web run lint:fast && bun --cwd apps/api run lint:fast"
+    "lint:fast": "bun --cwd apps/web run lint:fast && bun --cwd apps/api run lint:fast",
+    "prepare": "husky"
   },
   "devDependencies": {
     "husky": "^9.1.7",

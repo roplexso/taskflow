@@ -1,12 +1,7 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import {
-	setFilter,
-	toggleTheme,
-	openCreateModal,
-	toggleSidebar,
-} from '@/store/ui-slice'
+import { setFilter, toggleTheme, openCreateModal } from '@/store/ui-slice'
 import { signOut } from '@/lib/auth-client'
 import { useRouter } from 'next/navigation'
 import { useTasks } from '@/hooks/use-tasks'

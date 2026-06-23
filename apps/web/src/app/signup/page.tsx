@@ -15,7 +15,7 @@ export default function SignupPage() {
 		e.preventDefault()
 		setError('')
 
-		const { data, error } = await signUp.email({
+		const { error } = await signUp.email({
 			email,
 			password,
 			name,

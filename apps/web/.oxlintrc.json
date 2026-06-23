@@ -1,12 +1,25 @@
 {
     "$schema": "./node_modules/oxlint/configuration_schema.json",
-    "rules": {
-        "no-unused-vars": "error",
-        "no-undef": "error",
-        "eqeqeq": "error",
-        "react/no-unused-state": "warn"
+    "env": {
+        "browser": true,
+        "node": false
     },
-    "ignore": [
+    "globals": {
+        "document": "readonly",
+        "window": "readonly",
+        "fetch": "readonly",
+        "Request": "readonly",
+        "Response": "readonly",
+        "URL": "readonly",
+        "console": "readonly",
+        "process": "readonly"
+    },
+    "rules": {
+        "no-unused-vars": "warn",
+        "no-undef": "error",
+        "eqeqeq": "error"
+    },
+    "ignorePatterns": [
         "node_modules/**",
         ".next/**"
     ]
