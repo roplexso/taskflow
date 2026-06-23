@@ -1,0 +1,28 @@
+{
+  "name": "api",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --env-file ../../.env index.ts",
+    "lint": "eslint .",
+    "lint:fast": "oxlint ."
+  },
+  "dependencies": {
+    "@my-app/shared": "workspace:*",
+    "better-auth": "^1.6.20",
+    "dotenv": "^17.4.2",
+    "prisma": "^6.19.3",
+    "@prisma/client": "^6.19.3"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@typescript-eslint/eslint-plugin": "^8.62.0",
+    "@typescript-eslint/parser": "^8.62.0",
+    "eslint": "^10.5.0",
+    "oxlint": "^1.71.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
