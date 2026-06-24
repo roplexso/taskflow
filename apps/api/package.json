@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "bun --env-file ../../.env index.ts",
     "lint": "eslint .",
-    "lint:fast": "oxlint ."
+    "lint:fast": "oxlint .",
+    "prepare": "node -e \"process.exit(0)\""
   },
   "dependencies": {
     "@my-app/shared": "workspace:*",
