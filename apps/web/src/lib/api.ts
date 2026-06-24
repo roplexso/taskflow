@@ -1,4 +1,6 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
+const API_URL =
+	process.env.NEXT_PUBLIC_API_URL ||
+	'https://api-production-f74dc.up.railway.app'
 
 async function fetchApi<T>(path: string, options?: RequestInit): Promise<T> {
 	const response = await fetch(`${API_URL}${path}`, {
