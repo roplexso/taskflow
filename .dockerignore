@@ -2,5 +2,5 @@ node_modules
 .next
 .git
 *.log
-.env
 apps/api/generated
+apps/api/prisma/generated
